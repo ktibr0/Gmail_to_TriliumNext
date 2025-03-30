@@ -23,7 +23,7 @@ On Header_Auth inputbox choose :Create new credential" fill as shown at picture.
 
 
 
-On TriliumNext interface add note (i call mine - Gmail), then click on it and in address line in brouser copy ID of this node, between  green lines:
+On TriliumNext interface add note (i call mine - Gmail), then click on it and in address line in browser copy ID of this node, between  green lines:
 ![image](https://github.com/user-attachments/assets/7219595f-5d79-4688-b39e-efe3debc8e25)
 
 Fill this value to last parameter
