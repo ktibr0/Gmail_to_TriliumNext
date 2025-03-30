@@ -1,0 +1,135 @@
+{
+  "name": "Gmail_to_TriliumNext",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -960,
+        -180
+      ],
+      "id": "8ff3f7fe-ebe0-4cf4-b4dc-4f76b8239502",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dWxRiB0fpLdfUBOF",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -740,
+        -180
+      ],
+      "id": "fc069d16-6534-4a28-a5c7-a4e9839a7cfb",
+      "name": "Gmail",
+      "webhookId": "c85aece0-77af-4fcb-b8b0-77675ed769d4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dWxRiB0fpLdfUBOF",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://YOUR_N8N_Instance/etapi/create-note",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{ $json.Subject }}"
+            },
+            {
+              "name": "type",
+              "value": "text"
+            },
+            {
+              "name": "content",
+              "value": "={{ $('Gmail Trigger').item.json.headers.from }} {{ $('Gmail Trigger').item.json.from.value[0].address }}{{ $('Gmail Trigger').item.json.html }}"
+            },
+            {
+              "name": "parentNoteId",
+              "value": "WQtcjm5l5rWN"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -540,
+        -260
+      ],
+      "id": "bc8b2b8b-749d-479e-a0d3-6ce0e4cbc41b",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "0HPcxd9I1JuPY4Px",
+          "name": "Header Auth account"
+        }
+
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "16a30a43-035c-442a-ab38-cabb2e416899",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b9f97c6ab551b97ac75a325d0f8389a980286b12baee8a8b0a94061ba9fc45e0"
+  },
+  "id": "FEegdCq3x3BjR85M",
+  "tags": []
+}
